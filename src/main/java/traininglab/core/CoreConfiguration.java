@@ -12,4 +12,5 @@ public class CoreConfiguration {
 	public MapperService mapperService() {
 		return new MapperServiceImpl();
 	}
+
 }
