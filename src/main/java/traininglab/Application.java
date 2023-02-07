@@ -5,9 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import traininglab.personalrecord.PersonalRecordConfiguration;
+import traininglab.rest.RestConfiguration;
 
 @SpringBootApplication
-@Import(PersonalRecordConfiguration.class)
+@Import(RestConfiguration.class)
 
 public class Application {
 

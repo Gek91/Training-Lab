@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-public class Record {
+public class RecordEntry {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,6 @@ public class Record {
 	private LocalDate recordDate;
 	@Column(name = "\"value\"")
 	private BigDecimal value;
+	@Column
+	private BigDecimal percentage;
 }

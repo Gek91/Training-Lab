@@ -1,4 +1,4 @@
-package traininglab.personalrecord.application.data;
+package traininglab.rest.data;
 
 import lombok.Value;
 
@@ -11,5 +11,6 @@ public class CreateRecordRequestDTO {
 	private String exerciseId;
 	private LocalDate recordDate;
 	private BigDecimal value;
+	private BigDecimal percentage;
 
 }

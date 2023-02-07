@@ -15,5 +15,6 @@ public class CreateRecordData {
 	private Exercise execise;
 	private LocalDate recordDate;
 	private BigDecimal value;
+	private BigDecimal percentage;
 
 }

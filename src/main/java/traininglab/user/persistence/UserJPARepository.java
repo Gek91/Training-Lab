@@ -15,6 +15,6 @@ public class UserJPARepository implements UserRepository {
 
 	@Override
 	public List<User> getUserList() {
-		return this.entityManager.createQuery("FROM User", User.class).getResultList();
+		return this.entityManager.createQuery("FROM traininglab.user.domain.model.User", User.class).getResultList();
 	}
 }

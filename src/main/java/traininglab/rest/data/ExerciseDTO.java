@@ -1,8 +1,10 @@
-package traininglab.personalrecord.application.data;
+package traininglab.rest.data;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
-@Value
+@Data
 public class ExerciseDTO {
 
 	private String id;

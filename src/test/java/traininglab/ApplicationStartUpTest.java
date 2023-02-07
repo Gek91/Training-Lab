@@ -1,6 +1,6 @@
 package traininglab;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,10 +14,10 @@ import javax.transaction.Transactional;
 @ActiveProfiles("test")
 @Transactional
 //Needed to activate test rollback. Without the database remain dirty after every test
-class ApplicationStartUpTest {
+public class ApplicationStartUpTest {
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
 
 }

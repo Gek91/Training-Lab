@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import traininglab.personalrecord.application.PersonalRecordApplicationService;
 import traininglab.personalrecord.domain.model.Exercise;
-import traininglab.personalrecord.domain.model.Record;
-import traininglab.personalrecord.domain.repository.RecordRepository;
+import traininglab.personalrecord.domain.repository.RecordEntryRepository;
 import traininglab.personalrecord.domain.service.RecordService;
-import traininglab.user.domain.model.User;
+import traininglab.rest.data.ExerciseDTO;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -26,46 +26,17 @@ import java.util.List;
 public class RecordServiceTest {
 
 	@Autowired
-	private RecordService recordService;
-	@Autowired
-	private RecordRepository recordRepository;
+	private PersonalRecordApplicationService applicationService;
 
 	@Test
 	public void testRecordService() {
 
-		List<Exercise> exerciseList = recordService.getExerciseList();
+		List<ExerciseDTO> exerciseList = applicationService.getExerciseList();
 
 		Assert.assertEquals(5, exerciseList.size());
-
-	}
-
-	@Test
-	public void testJPA() {
-
-		Exercise exercise = new Exercise();
-		exercise.setId("1");
-		exercise.setName("ex1");
-
-		User user = new User();
-		user.setId("1");
-		user.setFirstname("us1");
-		user.setFirstname("last1");
-
-		Record record = new Record();
-		record.setExercise(exercise);
-		record.setUser(user);
-		record.setValue(BigDecimal.ONE);
-		record.setRecordDate(LocalDate.now());
-
-		recordRepository.save(record);
-
-		System.out.println(recordService.getExerciseList().get(0).getName());
-
-		record.getExercise().setName("ciao");
-
-		recordRepository.save(record);
-
-		System.out.println(recordService.getExerciseList().get(0).getName());
+		Assert.assertEquals("1", exerciseList.get(0).getId());
+		Assert.assertEquals("ex1", exerciseList.get(0).getName());
+		Assert.assertTrue(exerciseList.stream().map(ExerciseDTO::getId).collect(Collectors.toSet()).containsAll(Arrays.asList("1","2","3","4","5")));
 
 	}
 

@@ -1,7 +1,6 @@
 package traininglab.personalrecord.domain.model;
 
 import lombok.Data;
-import lombok.Value;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
