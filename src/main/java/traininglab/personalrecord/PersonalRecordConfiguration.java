@@ -14,14 +14,15 @@ import traininglab.personalrecord.domain.service.impl.RecordServiceImpl;
 import traininglab.personalrecord.persistence.ExerciseJPARepository;
 import traininglab.personalrecord.persistence.RecordJPARepository;
 import traininglab.user.UserConfiguration;
+import traininglab.user.application.UserService;
 
 @Configuration
 @Import(UserConfiguration.class)
 public class PersonalRecordConfiguration {
 
 	@Bean
-	public PersonalRecordApplicationService personalRecordApplicationService(MapperService mapperService) {
-		return new PersonalRecordApplicationServiceImpl(exerciseRepository(), recordRepository(), recordService(), mapperService);
+	public PersonalRecordApplicationService personalRecordApplicationService(MapperService mapperService, UserService userService) {
+		return new PersonalRecordApplicationServiceImpl(exerciseRepository(), recordRepository(), recordService(), mapperService, userService);
 	}
 	@Bean
 	public RecordService recordService() {

@@ -14,6 +14,13 @@ public class UserJPARepository implements UserRepository {
 	private EntityManager entityManager;
 
 	@Override
+	public User getUserById(String id) {
+		return this.entityManager.createQuery("FROM traininglab.user.domain.model.User WHERE id = :id", User.class)
+				.setParameter("id", id)
+				.getSingleResult();
+	}
+
+	@Override
 	public List<User> getUserList() {
 		return this.entityManager.createQuery("FROM traininglab.user.domain.model.User", User.class).getResultList();
 	}

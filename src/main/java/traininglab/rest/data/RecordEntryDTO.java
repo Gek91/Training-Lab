@@ -1,11 +1,12 @@
 package traininglab.rest.data;
 
+import lombok.Data;
 import lombok.Value;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Value
+@Data
 public class RecordEntryDTO {
 	private Long id;
 	private ExerciseDTO exercise;

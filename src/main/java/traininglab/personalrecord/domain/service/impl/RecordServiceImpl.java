@@ -29,6 +29,7 @@ public class RecordServiceImpl implements RecordService {
 		record.setExercise(data.getExecise());
 		record.setUser(data.getUser());
 		record.setValue(data.getValue());
+		record.setPercentage(data.getPercentage());
 
 		return record;
 	}

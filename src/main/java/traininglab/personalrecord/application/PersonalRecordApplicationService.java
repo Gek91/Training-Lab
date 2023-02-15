@@ -11,4 +11,5 @@ public interface PersonalRecordApplicationService {
 	RecordEntryDTO createRecordEntry(CreateRecordRequestDTO data);
 
 	List<ExerciseDTO> getExerciseList();
+
 }

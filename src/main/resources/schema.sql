@@ -3,7 +3,15 @@ CREATE TABLE "user" (
 	id VARCHAR(63) NOT NULL,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
+    password VARCHAR(63) NOT NULL,
+    enabled TINYINT(4) NOT NULL DEFAULT 1,
     PRIMARY KEY (id)
+) ENGINE = InnoDB;
+
+CREATE TABLE user_role (
+	user_id VARCHAR(63) NOT NULL,
+	role VARCHAR(63) NOT NULL,
+	PRIMARY KEY(user_id, role)
 ) ENGINE = InnoDB;
 
 CREATE TABLE exercise (

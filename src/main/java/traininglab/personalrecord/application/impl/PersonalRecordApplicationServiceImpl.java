@@ -1,5 +1,6 @@
 package traininglab.personalrecord.application.impl;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import traininglab.core.service.MapperService;
 import traininglab.personalrecord.application.PersonalRecordApplicationService;
@@ -12,6 +13,7 @@ import traininglab.personalrecord.domain.service.data.CreateRecordData;
 import traininglab.rest.data.CreateRecordRequestDTO;
 import traininglab.rest.data.ExerciseDTO;
 import traininglab.rest.data.RecordEntryDTO;
+import traininglab.user.application.UserService;
 import traininglab.user.domain.model.User;
 
 import java.util.List;
@@ -24,24 +26,27 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 	private RecordEntryRepository recordEntryRepository;
 	private RecordService recordService;
 	private MapperService mapperService;
-
+	private UserService userService;
 
 	public PersonalRecordApplicationServiceImpl(
 			ExerciseRepository exerciseRepository,
 			RecordEntryRepository recordEntryRepository,
 			RecordService recordService,
-			MapperService mapperService) {
+			MapperService mapperService,
+			UserService userService) {
 		this.recordEntryRepository = recordEntryRepository;
 		this.exerciseRepository = exerciseRepository;
 		this.recordService = recordService;
 		this.mapperService = mapperService;
+		this.userService = userService;
 	}
 
 	@Override
 	public RecordEntryDTO createRecordEntry(CreateRecordRequestDTO data) {
 
-		//TODO get user from context
-		RecordEntry entry = recordService.createRecordEntry(buildFromRequest(null, data));
+		User currentUser = userService.getCurrentUser();
+
+		RecordEntry entry = recordService.createRecordEntry(buildFromRequest(currentUser, data));
 
 		recordEntryRepository.add(entry);
 
