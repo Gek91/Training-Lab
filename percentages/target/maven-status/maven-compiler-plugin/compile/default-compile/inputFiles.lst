@@ -3,7 +3,10 @@
 /Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/controller/ControllerConfiguration.java
 /Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/calculation/CalculationConfiguration.java
 /Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/Application.java
+/Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/controller/impl/HTMLControllerImpl.java
 /Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/calculation/service/impl/PercentageCalculationServiceImpl.java
 /Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/controller/HTMLController.java
 /Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/calculation/service/PercentageCalculationService.java
 /Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/core/CoreConfiguration.java
+/Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/controller/utils/WeightTableHTMLBuilder.java
+/Users/gek/Dev/Git/Training-Lab/percentages/src/main/java/percentage/ResponseExceptionHandler.java

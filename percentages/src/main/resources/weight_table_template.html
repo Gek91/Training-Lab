@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<style>
+			table, th, td {
+			  border: 1px solid black;
+			  border-collapse: collapse;
+			  font-size: 25px;
+			}
+			p {
+				font-size: 35px;
+			}
+		</style>
+	</head>
+	<body>
+		<p>Weights using 1RM of: <b>$rm</b></p>
+
+		<table style="width:100%">
+			<tr>
+				#foreach($elem in $percentages )
+				<td><b>$elem</b></td>
+				#end
+			</tr>
+			<tr>
+				#foreach($elem in $weights )
+				<td>$elem</td>
+				#end
+			</tr>
+		</table>
+	</body>
+</html>
