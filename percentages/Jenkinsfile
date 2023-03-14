@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building ${env.BUILD_ID}"\
+                sh 'mvn clean compile -Dmaven.test.skip=true'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo "Testing ${env.BUILD_ID}"
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "Deploying ${env.BUILD_ID}"
+                sh 'mvn package -Dmaven.test.skip=true'
+            }
+        }
+    }
+}
