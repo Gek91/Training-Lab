@@ -10,7 +10,7 @@ pipeline {
             steps {
                 echo "Building ${env.BUILD_ID}"
                 dir('percentages') {
-                    sh 'mvn clean compile -Dmaven.test.skip=true'
+                    sh 'mvn clean compile package -Dmaven.test.skip=true'
                 }
             }
         }
@@ -24,9 +24,9 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo "Deploying ${env.BUILD_ID}"
+                echo "Building image ${env.BUILD_ID}"
                 dir('percentages') {
-                   sh 'mvn package -Dmaven.test.skip=true'
+                   sh 'mvn spring-boot:build-image -Dmaven.test.skip=true'
                 }
             }
         }
