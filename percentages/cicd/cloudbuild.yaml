@@ -7,6 +7,7 @@ steps:
     entrypoint: mvn
     dir: percentages
     args: ["package", "-Dmaven.test.skip=true"]
-#  - name: gcr.io/cloud-builders/docker
-#    args: ["build", "-t", "us-central1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/hellospring", "--build-arg=JAR_FILE=target/hello-spring-1.0.0.jar", "."]
-#images: ["us-central1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/hellospring"]
+  - name: gcr.io/cloud-builders/docker
+    dir: percentages
+    args: ["build", "-t", "europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages", "."]
+images: ["europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages"]
