@@ -1,5 +1,6 @@
 package percentage.controller.impl;
 
+import org.springframework.http.ResponseEntity;
 import percentage.calculation.service.PercentageCalculationService;
 import percentage.controller.HTMLController;
 import percentage.controller.utils.WeightTableHTMLBuilder;
@@ -31,5 +32,10 @@ public class HTMLControllerImpl implements HTMLController {
 		Map<BigDecimal, BigDecimal> percentagesvValueMap = percentageCalculationService.calculateStandardPercentagesFrom1RM(rmValue);
 
 		return weightTableHTMLBuilder.buildHTML(percentagesvValueMap, rmValue);
+	}
+
+	@Override
+	public ResponseEntity healthCheck() {
+		return ResponseEntity.ok().build();
 	}
 }
