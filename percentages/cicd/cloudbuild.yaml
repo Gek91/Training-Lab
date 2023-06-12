@@ -10,4 +10,13 @@ steps:
   - name: gcr.io/cloud-builders/docker
     dir: percentages
     args: ["build", "-t", "europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages", "."]
-images: ["europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages"]
+  - name: gcr.io/cloud-builders/docker
+    dir: percentages
+    args: [ "push", "europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages"]
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    args:
+      - run
+      - --filename=petcentage/kube
+      - --location=europe-west1
+      - --cluster=mycluster
+#images: ["europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages"]
