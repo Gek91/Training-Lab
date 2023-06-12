@@ -16,7 +16,7 @@ steps:
   - name: "gcr.io/cloud-builders/gke-deploy"
     args:
       - run
-      - --filename=petcentages/kube
+      - --filename=petcentages/kube/
       - --location=europe-west1
       - --cluster=mycluster
 #images: ["europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages"]
