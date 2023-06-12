@@ -35,7 +35,7 @@ spec:
       containers:
         - name: percentage-api
           image: europe-west1-docker.pkg.dev/letdoit-389105/training-lab/percentages:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
 
