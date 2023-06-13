@@ -71,4 +71,4 @@ spec:
   iap:
     enabled: true
     oauthclientCredentials:
-      secretName:
+      secretName: my-secret
