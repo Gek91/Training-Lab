@@ -4,9 +4,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import traininglab.rest.data.CreateRecordRequestDTO;
-import traininglab.rest.data.ExerciseDTO;
-import traininglab.rest.data.RecordEntryDTO;
+import traininglab.personalrecord.application.data.CreateRecordRequestDTO;
+import traininglab.personalrecord.application.data.ExerciseDTO;
+import traininglab.personalrecord.application.data.RecordEntryDTO;
 
 import java.util.List;
 

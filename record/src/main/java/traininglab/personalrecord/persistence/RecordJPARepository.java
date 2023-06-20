@@ -26,7 +26,7 @@ public class RecordJPARepository implements RecordEntryRepository {
 	@Override
 	public List<RecordEntry> getRecordList(RecordListFilters filters) {
 
-		String query = "FROM Record WHERE TRUE ";
+		String query = "FROM RecordEntry WHERE 1=1 ";
 		Map<String, Object> parameters = new HashMap<>();
 
 		if(filters != null) {
@@ -42,8 +42,10 @@ public class RecordJPARepository implements RecordEntryRepository {
 			}
 		}
 
+		query += "order By recordDate";
+
 		TypedQuery<RecordEntry> typedQuery = this.entityManager.createQuery(query , RecordEntry.class);
-		parameters.entrySet().forEach(entry -> typedQuery.setParameter(entry.getKey(), entry.getValue()));
+		parameters.forEach((key, value) -> typedQuery.setParameter(key, value));
 
 		return typedQuery.getResultList();
 	}

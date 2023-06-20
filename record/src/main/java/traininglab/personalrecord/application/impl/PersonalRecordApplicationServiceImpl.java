@@ -1,18 +1,20 @@
 package traininglab.personalrecord.application.impl;
 
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import traininglab.core.service.MapperService;
 import traininglab.personalrecord.application.PersonalRecordApplicationService;
+import traininglab.personalrecord.application.data.GetRecordListFilersDTO;
 import traininglab.personalrecord.domain.model.Exercise;
 import traininglab.personalrecord.domain.model.RecordEntry;
 import traininglab.personalrecord.domain.repository.ExerciseRepository;
 import traininglab.personalrecord.domain.repository.RecordEntryRepository;
+import traininglab.personalrecord.domain.repository.data.RecordListFilters;
 import traininglab.personalrecord.domain.service.RecordService;
 import traininglab.personalrecord.domain.service.data.CreateRecordData;
-import traininglab.rest.data.CreateRecordRequestDTO;
-import traininglab.rest.data.ExerciseDTO;
-import traininglab.rest.data.RecordEntryDTO;
+import traininglab.personalrecord.application.data.CreateRecordRequestDTO;
+import traininglab.personalrecord.application.data.ExerciseDTO;
+import traininglab.personalrecord.application.data.RecordEntryDTO;
 import traininglab.user.application.UserService;
 import traininglab.user.domain.model.User;
 
@@ -61,12 +63,38 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 
 		return new CreateRecordData(
 				user,
-				optionalExercise.isPresent() ? optionalExercise.get() : null,
+				optionalExercise.orElse(null),
 				data.getRecordDate(),
 				data.getValue(),
 				data.getPercentage()
 		);
 	}
+
+	@Override
+	public List<RecordEntryDTO> getRecordList(GetRecordListFilersDTO filters) {
+
+		User currentUser = userService.getCurrentUser();
+
+		List<RecordEntry> recordList = recordEntryRepository.getRecordList(buildFilters(currentUser, filters));
+
+		return mapperService.mapAll(recordList, RecordEntryDTO.class);
+	}
+
+	private RecordListFilters buildFilters(User user, GetRecordListFilersDTO filters) {
+
+		RecordListFilters output = new RecordListFilters();
+
+		Optional.ofNullable(user).ifPresent(x -> output.setUserId(x.getId()));
+
+		if(filters != null) {
+			Optional.ofNullable(filters.getExerciseId()).ifPresent(output::setExerciseId);
+			Optional.ofNullable(filters.getOffset()).ifPresent(output::setOffset);
+			Optional.ofNullable(filters.getPageSize()).ifPresent(output::setPageSize);
+		}
+
+		return output;
+	}
+
 
 	@Override
 	public List<ExerciseDTO> getExerciseList() {

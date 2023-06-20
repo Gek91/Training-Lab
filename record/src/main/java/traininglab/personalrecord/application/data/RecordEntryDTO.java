@@ -1,7 +1,6 @@
-package traininglab.rest.data;
+package traininglab.personalrecord.application.data;
 
 import lombok.Data;
-import lombok.Value;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

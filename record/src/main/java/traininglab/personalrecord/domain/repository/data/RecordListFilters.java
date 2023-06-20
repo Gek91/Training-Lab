@@ -8,4 +8,7 @@ public class RecordListFilters {
 	private String userId;
 	private String exerciseId;
 
+	private int pageSize = 20;
+	private long offset = 0;
+
 }

@@ -2,6 +2,7 @@ package traininglab.personalrecord.domain.service.data;
 
 import lombok.Data;
 import lombok.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import traininglab.personalrecord.domain.model.Exercise;
 import traininglab.user.domain.model.User;
 
