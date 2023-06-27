@@ -39,12 +39,21 @@ spec:
           imagePullPolicy: Always #needed to update image on pipeline run
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - mountPath: "/application.properties"
+              name: application-properties
         - name: cloud-sql-proxy #Cloud Sql Auth proxy as sidecar
           image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.1.0
           args:
             - "--structured-logs"
             - "--port=3306" #proxy exposed port on 127.0.0.1
             - "letdoit-389105:europe-west1:dev-training" #instance name
+      volumes:
+        - name: application-properties
+          secret:
+            secretName: record-properties-secret
+            optional: true
+
 ---
 
 #Workload identity
