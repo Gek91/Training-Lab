@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Data
-@Entity(name = "\"user\"")
+@Entity(name = "users")
 public class User implements UserDetails {
 	@Id
 	private String id;

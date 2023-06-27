@@ -1,4 +1,4 @@
-INSERT INTO "user" (id, firstname, lastname, password) values
+INSERT INTO `users` (id, firstname, lastname, password) values
 ('1',	'us1', 'last1', '$2a$10$mIj7rv/YKpUStQHJx1raEOnQzydYLylDfzUetzJfrpTpIXK7myWoi'), -- psw: ciao
 ('2',	'us2', 'last2', '$2a$10$mIj7rv/YKpUStQHJx1raEOnQzydYLylDfzUetzJfrpTpIXK7myWoi'),
 ('3',	'us3', 'last3', '$2a$10$mIj7rv/YKpUStQHJx1raEOnQzydYLylDfzUetzJfrpTpIXK7myWoi');

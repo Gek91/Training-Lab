@@ -1,6 +1,5 @@
 package traininglab.user.persistence;
 
-import traininglab.personalrecord.domain.model.Exercise;
 import traininglab.user.domain.model.User;
 import traininglab.user.domain.repository.UserRepository;
 

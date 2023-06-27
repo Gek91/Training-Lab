@@ -1,23 +1,22 @@
 steps:
   - name: maven:3-eclipse-temurin-17-alpine
     entrypoint: mvn
-    dir: percentages
+    dir: record
     args: ["test"]
   - name: maven:3-eclipse-temurin-17-alpine
     entrypoint: mvn
-    dir: percentages
+    dir: record
     args: ["package", "-Dmaven.test.skip=true"]
   - name: gcr.io/cloud-builders/docker
-    dir: percentages
-    args: ["build", "-t", "europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages", "."]
+    dir: record
+    args: ["build", "-t", "europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/record", "."]
   - name: gcr.io/cloud-builders/docker
-    dir: percentages
-    args: [ "push", "europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages"]
+    dir: record
+    args: [ "push", "europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/record"]
   - name: "gcr.io/cloud-builders/gke-deploy"
     args:
       - run
-      - --filename=percentages/kube/
+      - --filename=record/kube/
       - --location=europe-west1
       - --cluster=mycluster
       - --namespace=dev
-#images: ["europe-west1-docker.pkg.dev/$PROJECT_ID/training-lab/percentages"]

@@ -1,5 +1,5 @@
 
-CREATE TABLE "user" (
+CREATE TABLE `users` (
 	id VARCHAR(63) NOT NULL,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE record_entry (
 	user_id VARCHAR(63) NOT NULL,
 	exercise_id VARCHAR(63) NOT NULL,
 	record_date DATE NOT NULL,
-	"value" DECIMAL(6,2) NOT NULL,
+	`value` DECIMAL(6,2) NOT NULL,
 	percentage DECIMAL(3,2) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
