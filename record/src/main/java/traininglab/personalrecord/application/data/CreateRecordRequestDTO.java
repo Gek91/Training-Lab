@@ -1,11 +1,12 @@
 package traininglab.personalrecord.application.data;
 
+import lombok.Data;
 import lombok.Value;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Value
+@Data
 public class CreateRecordRequestDTO {
 
 	private String exerciseId;

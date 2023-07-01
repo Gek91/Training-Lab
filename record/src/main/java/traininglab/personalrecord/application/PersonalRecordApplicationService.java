@@ -11,6 +11,8 @@ public interface PersonalRecordApplicationService {
 
 	RecordEntryDTO createRecordEntry(CreateRecordRequestDTO data);
 
+	RecordEntryDTO updateRecordEntry(Long id, CreateRecordRequestDTO data);
+
 	List<RecordEntryDTO> getRecordList(GetRecordListFilersDTO filters);
 
 	List<ExerciseDTO> getExerciseList();

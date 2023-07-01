@@ -1,6 +1,5 @@
 package traininglab.personalrecord.application.impl;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import traininglab.core.service.MapperService;
 import traininglab.personalrecord.application.PersonalRecordApplicationService;
@@ -10,35 +9,32 @@ import traininglab.personalrecord.domain.model.RecordEntry;
 import traininglab.personalrecord.domain.repository.ExerciseRepository;
 import traininglab.personalrecord.domain.repository.RecordEntryRepository;
 import traininglab.personalrecord.domain.repository.data.RecordListFilters;
-import traininglab.personalrecord.domain.service.RecordService;
-import traininglab.personalrecord.domain.service.data.CreateRecordData;
+import traininglab.personalrecord.domain.model.data.CreateRecordData;
 import traininglab.personalrecord.application.data.CreateRecordRequestDTO;
 import traininglab.personalrecord.application.data.ExerciseDTO;
 import traininglab.personalrecord.application.data.RecordEntryDTO;
 import traininglab.user.application.UserService;
 import traininglab.user.domain.model.User;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 import java.util.Optional;
 
 @Transactional
 public class PersonalRecordApplicationServiceImpl implements PersonalRecordApplicationService {
 
-	private ExerciseRepository exerciseRepository;
-	private RecordEntryRepository recordEntryRepository;
-	private RecordService recordService;
-	private MapperService mapperService;
-	private UserService userService;
+	private final ExerciseRepository exerciseRepository;
+	private final RecordEntryRepository recordEntryRepository;
+	private final MapperService mapperService;
+	private final UserService userService;
 
 	public PersonalRecordApplicationServiceImpl(
 			ExerciseRepository exerciseRepository,
 			RecordEntryRepository recordEntryRepository,
-			RecordService recordService,
 			MapperService mapperService,
 			UserService userService) {
 		this.recordEntryRepository = recordEntryRepository;
 		this.exerciseRepository = exerciseRepository;
-		this.recordService = recordService;
 		this.mapperService = mapperService;
 		this.userService = userService;
 	}
@@ -48,7 +44,7 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 
 		User currentUser = userService.getCurrentUser();
 
-		RecordEntry entry = recordService.createRecordEntry(buildFromRequest(currentUser, data));
+		RecordEntry entry = RecordEntry.buildRecordFromData(buildFromRequest(currentUser, data));
 
 		recordEntryRepository.add(entry);
 
@@ -68,6 +64,37 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 				data.getValue(),
 				data.getPercentage()
 		);
+	}
+
+	@Override
+	public RecordEntryDTO updateRecordEntry(Long id, CreateRecordRequestDTO data) {
+
+		User currentUser = userService.getCurrentUser();
+
+		RecordEntry entry = getRecordEntryWithUser(id, currentUser);
+
+		entry.updateRecordEntryFromData(buildFromRequest(currentUser, data));
+
+		return mapperService.map(entry, RecordEntryDTO.class);
+	}
+
+	private RecordEntry getRecordEntryWithUser(Long id, User currentUser) {
+
+		RecordEntry entry = recordEntryRepository.getRecordById(id);
+
+		if(entry == null) {
+			throw new EntityExistsException();
+		}
+
+		if(!checkUserCanEditRecord(currentUser, entry)) {
+			//TODO permission exception
+		}
+
+		return entry;
+	}
+
+	private boolean checkUserCanEditRecord(User user, RecordEntry record) {
+		return user.getId().equals(record.getUser().getId());
 	}
 
 	@Override

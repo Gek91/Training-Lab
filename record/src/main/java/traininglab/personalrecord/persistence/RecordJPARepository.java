@@ -17,10 +17,16 @@ public class RecordJPARepository implements RecordEntryRepository {
 	private EntityManager entityManager;
 
 	@Override
-	public void add(RecordEntry record) {
+	public void add(RecordEntry entry) {
 
-		entityManager.persist(record);
+		entityManager.persist(entry);
 		entityManager.flush();
+	}
+
+	@Override
+	public RecordEntry getRecordById(Long id) {
+
+		return entityManager.find(RecordEntry.class, id);
 	}
 
 	@Override

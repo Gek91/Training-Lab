@@ -1,4 +1,4 @@
-package traininglab.personalrecord.domain.service.data;
+package traininglab.personalrecord.domain.model.data;
 
 import lombok.Data;
 import lombok.Value;

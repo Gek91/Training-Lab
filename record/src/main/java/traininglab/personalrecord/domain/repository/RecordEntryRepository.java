@@ -9,5 +9,7 @@ public interface RecordEntryRepository {
 
 	void add(RecordEntry entry);
 
+	RecordEntry getRecordById(Long id);
+
  	List<RecordEntry> getRecordList(RecordListFilters filters);
 }
