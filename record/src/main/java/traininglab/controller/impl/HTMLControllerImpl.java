@@ -1,9 +1,9 @@
-package percentage.controller.impl;
+package traininglab.controller.impl;
 
 import org.springframework.http.ResponseEntity;
-import percentage.calculation.service.PercentageCalculationService;
-import percentage.controller.HTMLController;
-import percentage.controller.utils.WeightTableHTMLBuilder;
+import traininglab.calculation.service.PercentageCalculationService;
+import traininglab.controller.HTMLController;
+import traininglab.controller.utils.WeightTableHTMLBuilder;
 
 import java.math.BigDecimal;
 import java.util.Map;

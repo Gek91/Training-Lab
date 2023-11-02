@@ -3,7 +3,7 @@ package traininglab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
-import traininglab.rest.RestConfiguration;
+import traininglab.controller.RestConfiguration;
 
 @SpringBootApplication
 @Import({RestConfiguration.class, WebSecurityConfiguration.class})

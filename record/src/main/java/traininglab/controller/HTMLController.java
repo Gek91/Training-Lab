@@ -1,4 +1,4 @@
-package percentage.controller;
+package traininglab.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

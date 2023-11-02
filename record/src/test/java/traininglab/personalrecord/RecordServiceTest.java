@@ -8,12 +8,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import traininglab.core.exception.PermissionException;
 import traininglab.personalrecord.application.PersonalRecordApplicationService;
 import traininglab.personalrecord.application.data.CreateRecordRequestDTO;
 import traininglab.personalrecord.application.data.ExerciseDTO;
 import traininglab.personalrecord.application.data.GetRecordListFilersDTO;
 import traininglab.personalrecord.application.data.RecordEntryDTO;
+import traininglab.user.application.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -32,6 +35,9 @@ public class RecordServiceTest {
 	@Autowired
 	private PersonalRecordApplicationService applicationService;
 
+	@Autowired
+	private UserService userService;
+
 	@Test
 	public void testGetExerciseList() {
 
@@ -48,7 +54,7 @@ public class RecordServiceTest {
 	@WithMockUser(username = "1")
 	public void testGetRecordList1() {
 
-		List<RecordEntryDTO> recordList = applicationService.getRecordList(new GetRecordListFilersDTO());
+		List<RecordEntryDTO> recordList = applicationService.getRecordList(userService.getCurrentUser(), new GetRecordListFilersDTO());
 
 		Assert.assertEquals(3, recordList.size());
 		Assert.assertEquals(Long.valueOf(1), recordList.get(0).getId());
@@ -78,7 +84,7 @@ public class RecordServiceTest {
 	@WithMockUser(username = "2")
 	public void testGetRecordList2() {
 
-		List<RecordEntryDTO> recordList = applicationService.getRecordList(new GetRecordListFilersDTO());
+		List<RecordEntryDTO> recordList = applicationService.getRecordList(userService.getCurrentUser(), new GetRecordListFilersDTO());
 
 		Assert.assertEquals(1, recordList.size());
 		checkEqualsRecordEntryDTO(recordList.get(0), 4L, "1", LocalDate.of(2023, 1,4), BigDecimal.valueOf(120L), BigDecimal.valueOf(1L));
@@ -88,7 +94,7 @@ public class RecordServiceTest {
 	@WithMockUser(username = "2")
 	public void testCreateRecord() {
 
-		int size = applicationService.getRecordList(new GetRecordListFilersDTO()).size();
+		int size = applicationService.getRecordList(userService.getCurrentUser(), new GetRecordListFilersDTO()).size();
 
 		CreateRecordRequestDTO data = new CreateRecordRequestDTO();
 		data.setRecordDate(LocalDate.of(2023, 1,5));
@@ -96,11 +102,11 @@ public class RecordServiceTest {
 		data.setValue(BigDecimal.valueOf(80L));
 		data.setPercentage(BigDecimal.valueOf(1L));
 
-		RecordEntryDTO result = applicationService.createRecordEntry(data);
+		RecordEntryDTO result = applicationService.createRecordEntry(userService.getCurrentUser(), data);
 
 		checkEqualsRecordEntryDTOWithoutId(result, "2", LocalDate.of(2023, 1,5), BigDecimal.valueOf(80L), BigDecimal.valueOf(1L));
 
-		List<RecordEntryDTO> records = applicationService.getRecordList(new GetRecordListFilersDTO());
+		List<RecordEntryDTO> records = applicationService.getRecordList(userService.getCurrentUser(), new GetRecordListFilersDTO());
 
 		Assert.assertEquals(size + 1 ,records.size());
 
@@ -113,7 +119,7 @@ public class RecordServiceTest {
 	@WithMockUser(username = "2")
 	public void updateRecord() {
 
-		RecordEntryDTO entry = applicationService.getRecordList(new GetRecordListFilersDTO()).get(0);
+		RecordEntryDTO entry = applicationService.getRecordList(userService.getCurrentUser(), new GetRecordListFilersDTO()).get(0);
 
 		CreateRecordRequestDTO data = new CreateRecordRequestDTO();
 		data.setRecordDate(LocalDate.of(2023, 1,5));
@@ -121,13 +127,37 @@ public class RecordServiceTest {
 		data.setValue(BigDecimal.valueOf(80L));
 		data.setPercentage(BigDecimal.valueOf(1L));
 
-		entry = applicationService.updateRecordEntry(entry.getId(), data);
+		entry = applicationService.updateRecordEntry(userService.getCurrentUser(), entry.getId(), data);
 
 		checkEqualsRecordEntryDTO(entry, entry.getId(), "2", LocalDate.of(2023, 1,5), BigDecimal.valueOf(80L), BigDecimal.valueOf(1L));
 		Long id = entry.getId();
-		entry = applicationService.getRecordList(new GetRecordListFilersDTO()).stream().filter(x -> id.equals(x.getId())).findFirst().orElseGet(() -> null);
+		entry = applicationService.getRecordList(userService.getCurrentUser(), new GetRecordListFilersDTO()).stream().filter(x -> id.equals(x.getId())).findFirst().orElseGet(() -> null);
 
 		checkEqualsRecordEntryDTO(entry, entry.getId(), "2", LocalDate.of(2023, 1,5), BigDecimal.valueOf(80L), BigDecimal.valueOf(1L));
+	}
+
+	@Test
+	@WithMockUser(username = "2")
+	public void updateRecordNotFound() {
+
+		try {
+			applicationService.updateRecordEntry(userService.getCurrentUser(), -4l, null);
+			Assert.fail();
+		} catch(EntityNotFoundException e) {
+
+		}
+	}
+
+	@Test
+	@WithMockUser(username = "1")
+	public void updateRecordNotPermitted() {
+
+		try {
+			applicationService.updateRecordEntry(userService.getCurrentUser(), 5l, null);
+			Assert.fail();
+		} catch(PermissionException e) {
+
+		}
 	}
 
 }

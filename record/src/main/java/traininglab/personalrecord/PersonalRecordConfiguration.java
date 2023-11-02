@@ -19,8 +19,8 @@ import traininglab.user.application.UserService;
 public class PersonalRecordConfiguration {
 
 	@Bean
-	public PersonalRecordApplicationService personalRecordApplicationService(MapperService mapperService, UserService userService) {
-		return new PersonalRecordApplicationServiceImpl(exerciseRepository(), recordRepository(), mapperService, userService);
+	public PersonalRecordApplicationService personalRecordApplicationService(MapperService mapperService) {
+		return new PersonalRecordApplicationServiceImpl(exerciseRepository(), recordRepository(), mapperService);
 	}
 
 	@Bean

@@ -1,6 +1,7 @@
 package traininglab.personalrecord.application.impl;
 
 import org.springframework.transaction.annotation.Transactional;
+import traininglab.core.exception.PermissionException;
 import traininglab.core.service.MapperService;
 import traininglab.personalrecord.application.PersonalRecordApplicationService;
 import traininglab.personalrecord.application.data.GetRecordListFilersDTO;
@@ -17,6 +18,7 @@ import traininglab.user.application.UserService;
 import traininglab.user.domain.model.User;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,23 +28,19 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 	private final ExerciseRepository exerciseRepository;
 	private final RecordEntryRepository recordEntryRepository;
 	private final MapperService mapperService;
-	private final UserService userService;
+
 
 	public PersonalRecordApplicationServiceImpl(
 			ExerciseRepository exerciseRepository,
 			RecordEntryRepository recordEntryRepository,
-			MapperService mapperService,
-			UserService userService) {
+			MapperService mapperService) {
 		this.recordEntryRepository = recordEntryRepository;
 		this.exerciseRepository = exerciseRepository;
 		this.mapperService = mapperService;
-		this.userService = userService;
 	}
 
 	@Override
-	public RecordEntryDTO createRecordEntry(CreateRecordRequestDTO data) {
-
-		User currentUser = userService.getCurrentUser();
+	public RecordEntryDTO createRecordEntry(User currentUser, CreateRecordRequestDTO data) {
 
 		RecordEntry entry = RecordEntry.buildRecordFromData(buildFromRequest(currentUser, data));
 
@@ -67,9 +65,7 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 	}
 
 	@Override
-	public RecordEntryDTO updateRecordEntry(Long id, CreateRecordRequestDTO data) {
-
-		User currentUser = userService.getCurrentUser();
+	public RecordEntryDTO updateRecordEntry(User currentUser, Long id, CreateRecordRequestDTO data) {
 
 		RecordEntry entry = getRecordEntryWithUser(id, currentUser);
 
@@ -83,11 +79,11 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 		RecordEntry entry = recordEntryRepository.getRecordById(id);
 
 		if(entry == null) {
-			throw new EntityExistsException();
+			throw new EntityNotFoundException();
 		}
 
 		if(!checkUserCanEditRecord(currentUser, entry)) {
-			//TODO permission exception
+			throw new PermissionException();
 		}
 
 		return entry;
@@ -98,9 +94,7 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 	}
 
 	@Override
-	public List<RecordEntryDTO> getRecordList(GetRecordListFilersDTO filters) {
-
-		User currentUser = userService.getCurrentUser();
+	public List<RecordEntryDTO> getRecordList(User currentUser, GetRecordListFilersDTO filters) {
 
 		List<RecordEntry> recordList = recordEntryRepository.getRecordList(buildFilters(currentUser, filters));
 
