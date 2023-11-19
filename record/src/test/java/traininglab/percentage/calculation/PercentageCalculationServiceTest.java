@@ -309,4 +309,52 @@ public class PercentageCalculationServiceTest {
 			Assert.assertEquals("inputValue is less or equal zero", exception.getMessage());
 		}
 	}
+
+	////
+
+	@Test
+	public void calculate1RMValueGivenValueAndPercentageSimple() {
+
+		Assert.assertEquals(new BigDecimal("200.00"), percentageCalculationService.calculate1RMValueGivenValueAndPercentage(BigDecimal.valueOf(100l), new BigDecimal("0.50")));
+		Assert.assertEquals(new BigDecimal("100.00"), percentageCalculationService.calculate1RMValueGivenValueAndPercentage(BigDecimal.valueOf(100l), new BigDecimal("1.00")));
+	}
+
+	@Test
+	public void calculate1RMValueGivenValueAndPercentage() {
+
+		Assert.assertEquals(new BigDecimal("128.57"), percentageCalculationService.calculate1RMValueGivenValueAndPercentage(BigDecimal.valueOf(90l), new BigDecimal("0.70")));
+		Assert.assertEquals(new BigDecimal("77.78"), percentageCalculationService.calculate1RMValueGivenValueAndPercentage(BigDecimal.valueOf(70l), new BigDecimal("0.90")));
+	}
+
+	@Test
+	public void calculate1RMValueGivenValueAndPercentageInvalidValue() {
+
+		try {
+			percentageCalculationService.calculate1RMValueGivenValueAndPercentage(null, BigDecimal.valueOf(70l));
+			Assert.fail();
+		} catch (IllegalArgumentException exception) {
+			Assert.assertEquals("inputValue is null", exception.getMessage());
+		}
+
+		try {
+			percentageCalculationService.calculate1RMValueGivenValueAndPercentage(BigDecimal.valueOf(70l), null);
+			Assert.fail();
+		} catch (IllegalArgumentException exception) {
+			Assert.assertEquals("percentage is null", exception.getMessage());
+		}
+
+		try {
+			percentageCalculationService.calculate1RMValueGivenValueAndPercentage(BigDecimal.valueOf(-70l), BigDecimal.valueOf(70l));
+			Assert.fail();
+		} catch (IllegalArgumentException exception) {
+			Assert.assertEquals("inputValue is less or equal zero", exception.getMessage());
+		}
+
+		try {
+			percentageCalculationService.calculate1RMValueGivenValueAndPercentage(BigDecimal.valueOf(70l), BigDecimal.valueOf(-70l));
+			Assert.fail();
+		} catch (IllegalArgumentException exception) {
+			Assert.assertEquals("percentage is less or equal zero", exception.getMessage());
+		}
+	}
 }

@@ -36,7 +36,7 @@ public class RecordEntry {
 
 	private RecordEntry() {}
 
-	public static RecordEntry buildRecordFromData(CreateRecordData data) {
+	public static RecordEntry createRecordFromData(CreateRecordData data) {
 
 		RecordEntry entry = new RecordEntry();
 

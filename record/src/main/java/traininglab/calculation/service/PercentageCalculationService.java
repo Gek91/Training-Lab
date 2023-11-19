@@ -11,6 +11,8 @@ public interface PercentageCalculationService {
 
 	BigDecimal calculatePercentageGiven1RMValueAndValue(BigDecimal oneRMValue, BigDecimal inputValue);
 
+	BigDecimal calculate1RMValueGivenValueAndPercentage(BigDecimal value, BigDecimal percentage);
+
 	//proportion inputPercentage : outputPercentage = InputValue : return
 	BigDecimal calculateValueGivenInputPercentageAndValueAndOutputPercentage(BigDecimal inputPercentage, BigDecimal inputValue, BigDecimal outputPercentage);
 

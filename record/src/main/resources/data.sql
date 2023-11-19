@@ -8,12 +8,12 @@ INSERT INTO user_role (user_id, role) values
 ('2', 'USER'),
 ('3', 'ADMIN');
 
-INSERT INTO exercise (id, name) values
-('1',	'ex1'),
-('2',	'ex2'),
-('3',	'ex3'),
-('4',	'ex4'),
-('5',	'ex5');
+INSERT INTO exercise (id, name, type) values
+('1',	'ex1', 0),
+('2',	'ex2', 0),
+('3',	'ex3', 0),
+('4',	'ex4', 1),
+('5',	'ex5', 1);
 
 INSERT INTO `record_entry` (`id`, `user_id`, `exercise_id`, `record_date`, `value`, `percentage`, `creation_timestamp`, `last_modification_timestamp`) values
 (1,	'1',	'1',	'2023-01-01',	100.00, 1.00, '2015-04-03 14:00:45', '2015-04-03 14:00:45'),

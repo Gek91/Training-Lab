@@ -19,29 +19,22 @@ public class PercentageCalculationServiceImpl implements PercentageCalculationSe
 		return oneRMValue.multiply(percentage).setScale(2, RoundingMode.HALF_UP);
 	}
 
-	private void validatePercentageValue(BigDecimal percentage, String fieldName) {
+	@Override
+	public BigDecimal calculatePercentageGiven1RMValueAndValue(BigDecimal oneRMValue, BigDecimal inputValue) {
 
-		if(percentage == null) {
-			throw new IllegalArgumentException(fieldName + " is null");
-		}
+		validateWeightValue(oneRMValue, "oneRMValue");
+		validateWeightValue(inputValue, "inputValue");
 
-		if(percentage.compareTo(BigDecimal.ZERO) <= 0) {
-			throw new IllegalArgumentException(fieldName + " is less or equal zero");
-		}
-
-		if(percentage.scale() > 4) {
-			throw new IllegalArgumentException(fieldName + " scale must be less than 5");
-		}
+		return inputValue.divide(oneRMValue,2, RoundingMode.HALF_UP);
 	}
 
-	private void validateWeightValue(BigDecimal value, String fieldName) {
-		if(value == null) {
-			throw new IllegalArgumentException(fieldName+ " is null");
-		}
+	@Override
+	public BigDecimal calculate1RMValueGivenValueAndPercentage(BigDecimal inputValue, BigDecimal percentage) {
 
-		if(value.compareTo(BigDecimal.ZERO) <= 0) {
-			throw new IllegalArgumentException(fieldName + " is less or equal zero");
-		}
+		validateWeightValue(inputValue, "inputValue");
+		validatePercentageValue(percentage, "percentage");
+
+		return inputValue.divide(percentage, 2, RoundingMode.HALF_UP);
 	}
 
 	@Override
@@ -72,16 +65,7 @@ public class PercentageCalculationServiceImpl implements PercentageCalculationSe
 	@Override
 	public Map<BigDecimal, BigDecimal> calculateStandardPercentagesFrom1RM(BigDecimal oneRMValue) {
 
-		//linked to keep insert order
-		Map<BigDecimal, BigDecimal> result = new LinkedHashMap<>();
-
-		validateWeightValue(oneRMValue, "oneRMValue");
-
-		for(BigDecimal percentage : STANDARD_PERCENTAGE_LIST) {
-			result.put(percentage, oneRMValue.multiply(percentage).setScale(2, RoundingMode.HALF_UP));
-		}
-
-		return result;
+		return calculateGivenPercentagesFrom1RM(oneRMValue, STANDARD_PERCENTAGE_LIST);
 	}
 
 	@Override
@@ -102,6 +86,16 @@ public class PercentageCalculationServiceImpl implements PercentageCalculationSe
 		return result;
 	}
 
+
+	private void validateWeightValue(BigDecimal value, String fieldName) {
+		if(value == null) {
+			throw new IllegalArgumentException(fieldName+ " is null");
+		}
+
+		if(value.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException(fieldName + " is less or equal zero");
+		}
+	}
 	private void validatePercentagesValue(List<BigDecimal> percentages) {
 
 		if(percentages.stream().anyMatch(x -> x == null)) {
@@ -117,13 +111,19 @@ public class PercentageCalculationServiceImpl implements PercentageCalculationSe
 		}
 	}
 
-	@Override
-	public BigDecimal calculatePercentageGiven1RMValueAndValue(BigDecimal oneRMValue, BigDecimal inputValue) {
+	private void validatePercentageValue(BigDecimal percentage, String fieldName) {
 
-		validateWeightValue(oneRMValue, "oneRMValue");
-		validateWeightValue(inputValue, "inputValue");
+		if(percentage == null) {
+			throw new IllegalArgumentException(fieldName + " is null");
+		}
 
-		return inputValue.divide(oneRMValue,2 ,RoundingMode.HALF_UP);
+		if(percentage.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException(fieldName + " is less or equal zero");
+		}
+
+		if(percentage.scale() > 4) {
+			throw new IllegalArgumentException(fieldName + " scale must be less than 5");
+		}
 	}
 
 }

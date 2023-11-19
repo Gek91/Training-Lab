@@ -45,10 +45,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 //				.authorizeRequests()
 // use the AuthorizationFilter instead of FilterSecurityInterceptor
 				.authorizeHttpRequests()
-				.anyRequest()
-				.authenticated()
-				.and()
-				.httpBasic(Customizer.withDefaults());
+				.anyRequest().permitAll();
+//				.authenticated()
+//				.and()
+//				.httpBasic(Customizer.withDefaults())
 
 		//no user session enabled
 		http.securityContext().securityContextRepository(new NullSecurityContextRepository());

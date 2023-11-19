@@ -46,6 +46,9 @@ public class RecordServiceTest {
 		Assert.assertEquals(5, exerciseList.size());
 		Assert.assertEquals("1", exerciseList.get(0).getId());
 		Assert.assertEquals("ex1", exerciseList.get(0).getName());
+		Assert.assertEquals(Integer.valueOf(0), exerciseList.get(0).getType().getId());
+		Assert.assertEquals("Weightlifting", exerciseList.get(0).getType().getLabel());
+
 		Assert.assertTrue(exerciseList.stream().map(ExerciseDTO::getId).collect(Collectors.toSet()).containsAll(Arrays.asList("1","2","3","4","5")));
 
 	}

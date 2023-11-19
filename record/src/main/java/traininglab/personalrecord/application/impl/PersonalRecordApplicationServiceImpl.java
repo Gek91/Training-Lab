@@ -14,10 +14,8 @@ import traininglab.personalrecord.domain.model.data.CreateRecordData;
 import traininglab.personalrecord.application.data.CreateRecordRequestDTO;
 import traininglab.personalrecord.application.data.ExerciseDTO;
 import traininglab.personalrecord.application.data.RecordEntryDTO;
-import traininglab.user.application.UserService;
 import traininglab.user.domain.model.User;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +40,7 @@ public class PersonalRecordApplicationServiceImpl implements PersonalRecordAppli
 	@Override
 	public RecordEntryDTO createRecordEntry(User currentUser, CreateRecordRequestDTO data) {
 
-		RecordEntry entry = RecordEntry.buildRecordFromData(buildFromRequest(currentUser, data));
+		RecordEntry entry = RecordEntry.createRecordFromData(buildFromRequest(currentUser, data));
 
 		recordEntryRepository.add(entry);
 
