@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-record-service
+spec:
+  selector:
+    app: dev-record-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-record-deploy
+spec:
+  selector:
+    matchLabels:
+      app: dev-record-app
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: dev-record-app
+    spec:
+      serviceAccountName: dev-record-identity #workload identity
+      containers:
+        - name: record-api
+          image: europe-west1-docker.pkg.dev/letdoit-389105/training-lab/record:latest
+          imagePullPolicy: Always #needed to update image on pipeline run
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: "/application.properties"
+              name: application-properties
+        - name: cloud-sql-proxy #Cloud Sql Auth proxy as sidecar
+          image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.1.0
+          args:
+            - "--structured-logs"
+            - "--port=3306" #proxy exposed port on 127.0.0.1
+            - "letdoit-389105:europe-west1:dev-training" #instance name
+      volumes:
+        - name: application-properties
+          secret:
+            secretName: record-properties-secret
+            optional: true
+
+---
+
+#Workload identity
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dev-record-identity
+
+
+---
+#NOT WORKING BECAUSE IS OF THE AUTH PROXY ON LOCAL HOST
+
+#service for Sql database
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: dev-mysql-record
+#spec:
+#  ports:
+#    - protocol: TCP
+#      port: 3306
+#      targetPort: 3306
+
+---
+
+#NOT WORKING BECAUSE IS OF THE AUTH PROXY ON LOCAL HOST
+
+#endpointslice for Sql database, needed because service is selectorless
+#apiVersion: discovery.k8s.io/v1
+#kind: EndpointSlice
+#metadata:
+#  name: dev-mysql-record
+#  labels:
+#    kubernetes.io/service-name: dev-mysql-record
+#addressType: IPv4
+#ports:
+#  - name: http
+#    protocol: TCP
+#    port: 3306
+#endpoints:
+#  - addresses:
+#      - "127.0.0.1"
